@@ -1,0 +1,23 @@
+name: Deploy to VPS
+
+on:
+    push:
+        branches: 
+            - main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Deploy to VPS
+              uses: appleboy/ssh-action@v0.1.1
+              with: 
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.USERNAME }}
+                key: ${{ secrets.KEY }}
+                script_path: |
+                    cd /home/boss/Server-deploying
+                    ./deploy.sh
