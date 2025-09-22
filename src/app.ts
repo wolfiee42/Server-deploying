@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get<object, MessageResponse>("/", (req, res) => {
-  console.log("Ping pong Ding Dong korong korong ding!!");
+  console.log("Ping pong Ding Dong korong korong ding ding!!");
   
   res.status(200).json({
     message: "🦄🌈✨👋🌎🌏✨🌈🦄🦄🌈✨👋🌎🌏✨🌈🦄",
