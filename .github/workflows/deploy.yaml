@@ -19,5 +19,4 @@ jobs:
                 username: ${{ secrets.USERNAME }}
                 key: ${{ secrets.KEY }}
                 script_path: |
-                    cd /home/boss/Server-deploying
                     ./deploy.sh
