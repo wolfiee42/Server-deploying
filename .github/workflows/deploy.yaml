@@ -11,17 +11,6 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Checkout Repository
-              uses: actions/checkout@v3
-
-            - name: Set up Node.js
-              uses: actions/setup-node@v3
-              with:
-                node-version: '20'
-            
-            - name: Install pnpm
-              run: npm install -g pnpm
-
             - name: Deploy to VPS
               uses: appleboy/ssh-action@v0.1.10
               with:
@@ -33,8 +22,6 @@ jobs:
                     cd /home/boss/server-deploy
                     echo "Pulling latest changes"
                     git pull origin main
-                    echo "Installing pm2"
-                    npm install -g pm2
                     echo "Installing dependencies"
                     pnpm install --frozen-lockfile
                     echo "Building the project"
