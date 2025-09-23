@@ -37,9 +37,16 @@ jobs:
                 username: ${{ secrets.USER }}
                 key: ${{ secrets.KEY }}
                 script: |
+                    echo "Stopping the project"
+                    docker stop deploy-server-2 || true
+
+                    echo "Removing the project"
+                    docker rm deploy-server-2 || true
+
                     echo "Pulling latest changes"
                     docker pull ${{ secrets.DOCKERHUB_USERNAME }}/deploy-server-2:latest
-                    docker stop deploy-server-2 || true
-                    docker rm deploy-server-2 || true
+
+                    echo "Starting the project"
                     docker run -d --name deploy-server-2 -p 8001:8001 ${{ secrets.DOCKERHUB_USERNAME }}/deploy-server-2:latest
+                    
                     echo "Deployment completed successfully"
