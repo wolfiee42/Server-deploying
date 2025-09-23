@@ -37,18 +37,23 @@ jobs:
                 username: ${{ secrets.USER }}
                 key: ${{ secrets.KEY }}
                 script: |
+                    echo "Killing any process using port ${{ secrets.PORT }}"
+                    sudo kill -9 $( sudo lsof -t -i :${{ secrets.PORT }} ) || true
+                
                     echo "Stopping the project"
                     docker stop deploy-server-2 || true
 
                     echo "Removing the project"
                     docker rm deploy-server-2 || true
 
+                    sleep 3
+
                     echo "Pulling latest changes"
                     docker pull ${{ secrets.DOCKERHUB_USERNAME }}/deploy-server-2:latest
 
                     echo "Starting the project with environment variables"
                     docker run -d --name deploy-server-2 \
-                    -p 8001:8001 \
+                    -p ${{ secrets.PORT }}:${{ secrets.PORT }} \
                     -e PORT=${{ secrets.PORT }} \
                     -e NODE_ENV=${{ secrets.NODE_ENV }} \
                     ${{ secrets.DOCKERHUB_USERNAME }}/deploy-server-2:latest
