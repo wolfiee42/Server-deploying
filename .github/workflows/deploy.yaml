@@ -18,6 +18,11 @@ jobs:
                 username: ${{ secrets.USER }}
                 key: ${{ secrets.KEY }}
                 script: |
+                    echo "Setting up Global Node Version Manager"
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+                    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
                     echo "File management"
                     cd /home/boss/server-deploy
                     echo "Pulling latest changes"
@@ -28,3 +33,4 @@ jobs:
                     pnpm build
                     echo "Restarting the project"
                     pm2 restart all
+                    echo "Deployment completed successfully"
