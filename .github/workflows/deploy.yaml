@@ -46,7 +46,11 @@ jobs:
                     echo "Pulling latest changes"
                     docker pull ${{ secrets.DOCKERHUB_USERNAME }}/deploy-server-2:latest
 
-                    echo "Starting the project"
-                    docker run -d --name deploy-server-2 -p 8001:8001 ${{ secrets.DOCKERHUB_USERNAME }}/deploy-server-2:latest
-                    
+                    echo "Starting the project with environment variables"
+                    docker run -d --name deploy-server-2 \
+                    -p 8001:8001 \
+                    -e PORT=${{ secrets.PORT }} \
+                    -e NODE_ENV=${{ secrets.NODE_ENV }} \
+                    ${{ secrets.DOCKERHUB_USERNAME }}/deploy-server-2:latest
+
                     echo "Deployment completed successfully"
