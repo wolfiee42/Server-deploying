@@ -25,5 +25,21 @@ jobs:
                 push: true
                 tags: ${{ secrets.DOCKERHUB_USERNAME }}/deploy-server-2:latest
 
-            - name: Completed Deployment
-              run: echo "Deployment completed successfully"
+                
+    deploy:
+        needs: build-and-push
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy to VPS
+              uses: appleboy/ssh-action@v0.1.10
+              with: 
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.USER }}
+                key: ${{ secrets.KEY }}
+                script: |
+                    echo "Pulling latest changes"
+                    docker pull ${{ secrets.DOCKERHUB_USERNAME }}/deploy-server-2:latest
+                    docker stop deploy-server-2 || true
+                    docker rm deploy-server-2 || true
+                    docker run -d --name deploy-server-2 -p 8001:8001 ${{ secrets.DOCKERHUB_USERNAME }}/deploy-server-2:latest
+                    echo "Deployment completed successfully"
