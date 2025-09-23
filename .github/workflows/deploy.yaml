@@ -21,8 +21,16 @@ jobs:
                 username: ${{ secrets.USER }}
                 key: ${{ secrets.KEY }}
                 script: |
-                    cd /var/www/express-app
+                    echo "File management"
+                    cd /home/boss/server-deploy
+                    echo "Pulling latest changes"
                     git pull origin main
+                    echo "Installing pnpm and pm2"
+                    npm install -g pnpm
+                    npm install -g pm2
+                    echo "Installing dependencies"
                     pnpm install --frozen-lockfile
+                    echo "Building the project"
                     pnpm build
+                    echo "Restarting the project"
                     pm2 restart all
